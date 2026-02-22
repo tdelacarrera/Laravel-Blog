@@ -26,8 +26,8 @@
             <x-app-logo href="{{ route('dashboard') }}" wire:navigate />
 
             <flux:navbar class="-mb-px max-lg:hidden">
-                <flux:navbar.item icon="layout-grid" :href="route('home')" :current="request()->routeIs('home')" wire:navigate>
-                    {{ __('Home') }}
+                <flux:navbar.item icon="layout-grid" :href="route('posts.index')" :current="request()->routeIs('posts.index')" wire:navigate>
+                    {{ __('Posts') }}
                 </flux:navbar.item>
             </flux:navbar>
 
@@ -81,8 +81,8 @@
 
             <flux:sidebar.nav>
                 <flux:sidebar.group :heading="__('Platform')">
-                    <flux:sidebar.item icon="layout-grid" :href="route('home')" :current="request()->routeIs('home')" wire:navigate>
-                        {{ __('Home')  }}
+                    <flux:sidebar.item icon="layout-grid" :href="route('posts.index')" :current="request()->routeIs('posts.index')" wire:navigate>
+                        {{ __('Posts')  }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', 'posts');
 
-Route::get('/posts', [PostController::class, 'index'])->name('home');
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
 Route::view('dashboard', 'dashboard')
