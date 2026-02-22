@@ -1,30 +1,85 @@
 <x-layouts::public>
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-8">Latest Posts</h1>
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-10">
+            <div>
+                <h1 class="text-4xl font-bold tracking-tight text-zinc-900 dark:text-white">
+                    Latest Posts
+                </h1>
+                <p class="mt-2 text-zinc-600 dark:text-zinc-400">
+                    Discover our most recent articles and updates.
+                </p>
+            </div>
+        </div>
 
-        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <!-- Posts Grid -->
+        <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
             @foreach($posts as $post)
-                <article class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow duration-200">
+                <article 
+                    class="group flex flex-col overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800 
+                           bg-white dark:bg-zinc-900 shadow-sm hover:shadow-xl 
+                           transition-all duration-300 hover:-translate-y-1"
+                >
+                    
+                    <!-- Image -->
                     @if($post->image_path)
-                        <img src="{{ asset($post->image_path) }}" alt="{{ $post->title }}" class="w-full h-48 object-cover rounded-t-lg">
+                        <div class="relative overflow-hidden">
+                            <img 
+                                src="{{ asset($post->image_path) }}" 
+                                alt="{{ $post->title }}" 
+                                class="h-52 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            >
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                        </div>
                     @endif
-                    <div class="p-6">
-                        <h2 class="text-xl font-semibold mb-2">
-                            <a href="" class="hover:text-blue-600">
+
+                    <!-- Content -->
+                    <div class="flex flex-col flex-1 p-6">
+                        
+                        <!-- Category Badge -->
+                        <div class="mb-3">
+                            <span class="inline-flex items-center rounded-full 
+                                         bg-indigo-50 text-indigo-600 
+                                         dark:bg-indigo-500/10 dark:text-indigo-400 
+                                         px-3 py-1 text-xs font-medium">
+                                {{ $post->category->name ?? 'Uncategorized' }}
+                            </span>
+                        </div>
+
+                        <!-- Title -->
+                        <h2 class="text-xl font-semibold text-zinc-900 dark:text-white mb-3 leading-snug">
+                            <a href="" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                                 {{ $post->title }}
                             </a>
                         </h2>
+
+                        <!-- Excerpt -->
                         @if($post->excerpt)
-                            <p class="text-gray-700 mb-4">{{ $post->excerpt }}</p>
+                            <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-6 line-clamp-3">
+                                {{ $post->excerpt }}
+                            </p>
                         @endif
-                        <div class="text-sm text-gray-500 flex justify-between items-center">
-                            <span>Published on {{ $post->published_at ? $post->published_at : 'No date' }}</span>
-                            <span>By {{ $post->user->name ?? 'Unknown' }}</span>
-                        </div>
-                        <div class="mt-2">
-                            <span class="inline-block bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded">
-                                {{ $post->category->name ?? 'Uncategorized' }}
-                            </span>
+
+                        <!-- Spacer -->
+                        <div class="mt-auto">
+                            
+                            <!-- Meta -->
+                            <div class="flex items-center justify-between text-xs text-zinc-500 dark:text-zinc-400 mb-4">
+                                <span>
+                                    {{ optional($post->published_at)->format('M d, Y') ?? 'Draft' }}
+                                </span>
+                                <span>
+                                    {{ $post->user->name ?? 'Unknown' }}
+                                </span>
+                            </div>
+
+                            <!-- CTA -->
+                            <a href="" 
+                               class="inline-flex items-center text-sm font-medium text-indigo-600 
+                                      dark:text-indigo-400 hover:underline">
+                                Read more →
+                            </a>
                         </div>
                     </div>
                 </article>
@@ -32,8 +87,9 @@
         </div>
 
         <!-- Pagination -->
-        <div class="mt-8">
+        <div class="mt-12">
             {{ $posts->links() }}
         </div>
+
     </div>
 </x-layouts::public>
