@@ -23,16 +23,16 @@
                 >
                     
                     <!-- Image -->
-                    @if($post->image_path)
+                    
                         <div class="relative overflow-hidden">
                             <img 
-                                src="{{ asset($post->image_path) }}" 
+                                src="{{ $post->image_path ? Storage::url($post->image_path) : asset('no-image.jpg') }}" 
                                 alt="{{ $post->title }}" 
                                 class="h-52 w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            >
+>
                             <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                         </div>
-                    @endif
+                    
 
                     <!-- Content -->
                     <div class="flex flex-col flex-1 p-6">

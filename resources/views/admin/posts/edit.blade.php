@@ -41,10 +41,8 @@
                     alt="Post Image"
                     class="w-40 rounded shadow">
 
-                <input type="file"
-                       name="image"
-                       accept="image/*"
-                       class="block w-full text-sm text-gray-500">
+                    <input type="file" name="image" accept="image/*" id="imageInput" class="block w-full text-sm text-gray-500">
+                       
             </div>
 
             {{-- Title --}}
@@ -146,5 +144,29 @@
 
         </form>
     </div>
+    
+@push('js')
+<script>
+const imageInput = document.getElementById('imageInput');
+const imgPreview = document.getElementById('imgPreview');
+
+imageInput.addEventListener('change', function() {
+    const file = this.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+         reader.addEventListener('load', function() {
+            imgPreview.src = reader.result;
+        });
+
+        reader.readAsDataURL(file);
+    } else {
+        imgPreview.src = "{{ asset('no-image.jpg') }}";
+    }
+});
+
+</script>
+@endpush
 
 </x-layouts::app>

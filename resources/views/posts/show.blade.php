@@ -20,13 +20,11 @@
         </header>
 
         <!-- Post Image -->
-        @if($post->image_path)
             <div class="mb-8 overflow-hidden rounded-xl">
-                <img src="{{ asset($post->image_path) }}" 
+                <img src="{{ $post->image_path ? Storage::url($post->image_path) : asset('no-image.jpg') }}" 
                      alt="{{ $post->title }}" 
                      class="w-full object-cover max-h-96">
             </div>
-        @endif
 
         <!-- Excerpt -->
         @if($post->excerpt)
