@@ -1,4 +1,5 @@
 <x-layouts::app>
+
     <flux:breadcrumbs>
         <flux:breadcrumbs.item href="{{ route('dashboard') }}">
             Dashboard
@@ -12,61 +13,132 @@
     </flux:breadcrumbs>
 
     <div class="bg-white px-6 py-8 shadow-lg rounded-lg">
-        <form action="{{route('admin.posts.update', $post)}}" method="POST" enctype="multipart/form-data" class="space-y-4">
+
+        <form action="{{ route('admin.posts.update', $post) }}"
+              method="POST"
+              enctype="multipart/form-data"
+              class="space-y-6">
+
             @csrf
             @method('PUT')
 
-            <img id="imgPreview" src="{{ $post->image_path ? Storage::url($post->image_path) : 'https://www.google.com/imgres?q=no%20image&imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fa%2Fac%2FNo_image_available.svg%2F330px-No_image_available.svg.png&imgrefurl=https%3A%2F%2Fcommons.wikimedia.org%2Fwiki%2FFile%3ANo_image_available.svg&docid=fdpOxr8npfcozM&tbnid=qb3Zl7NBki5QRM&vet=12ahUKEwjQxI7UseiSAxUdkZUCHXlTKDIQnPAOegQIGBAB..i&w=330&h=330&hcb=2&ved=2ahUKEwjQxI7UseiSAxUdkZUCHXlTKDIQnPAOegQIGBAB'}}" alt="image">
+            {{-- Image Section --}}
+            <div class="space-y-3">
+                <label class="block font-medium text-sm text-gray-700">
+                    Post Image
+                </label>
+                
+            {{-- Image preview --}}
+                <img id="imgPreview"
+                    src="{{ $post->image_path 
+                                ? Storage::url($post->image_path) 
+                                : asset('no-image.jpg') }}"
+                    alt="Post Image"
+                    class="w-40 rounded shadow">
 
-            <input type="file" name="image" accept="image/*">
-            
-            <flux:input label="Title" name="title" placeholder="Title" value="{{old('title', $post->title)}}"/>
-            <flux:input label="Slug" name="slug" placeholder="Slug" value="{{old('slug', $post->slug)}}"/>
+                <input type="file"
+                       name="image"
+                       accept="image/*"
+                       class="block w-full text-sm text-gray-500">
+            </div>
 
-            <flux:select name="category_id" label="category" placeholder="Choose category...">
+            {{-- Title --}}
+            <flux:input
+                label="Title"
+                name="title"
+                placeholder="Post title"
+                value="{{ old('title', $post->title) }}"
+            />
+
+            {{-- Slug --}}
+            <flux:input
+                label="Slug"
+                name="slug"
+                placeholder="post-slug"
+                value="{{ old('slug', $post->slug) }}"
+            />
+
+            {{-- Category --}}
+            <flux:select
+                name="category_id"
+                label="Category"
+                placeholder="Choose category...">
+
                 @foreach($categories as $category)
-                <flux:select.option value="{{$category->id}}" :selected="$category->id == old('category_id', $post->category_id)">{{$category->name}}</flux:select.option>
+                    <flux:select.option
+                        value="{{ $category->id }}"
+                        :selected="$category->id == old('category_id', $post->category_id)">
+                        {{ $category->name }}
+                    </flux:select.option>
                 @endforeach
+
             </flux:select>
 
-            <ul>
-                @foreach($tags as $tag)
-                    <li>
-                        <label>
-                            <input type="checkbox" name="tags[]" value= "{{$tag->id}}" @checked(old('tags',$post->tags->pluck('id')->contains($tag->id)))>{{$tag->name}}
+            {{-- Tags --}}
+            <div class="space-y-2">
+                <label class="block font-medium text-sm text-gray-700">
+                    Tags
+                </label>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                    @foreach($tags as $tag)
+                        <label class="flex items-center space-x-2 text-sm">
+                            <input type="checkbox"
+                                   name="tags[]"
+                                   value="{{ $tag->id }}"
+                                   class="rounded border-gray-300"
+                                   @checked(
+                                       collect(old('tags', $post->tags->pluck('id')->toArray()))
+                                           ->contains($tag->id)
+                                   )
+                            >
+                            <span>{{ $tag->name }}</span>
                         </label>
-                    </li>
-                @endforeach
-            </ul>
-            
+                    @endforeach
+                </div>
+            </div>
 
-            <flux:textarea label="Resume" name="excerpt">{{old('excerpt', $post->excerpt)}}</flux:textarea>
+            {{-- Resume --}}
+            <flux:textarea
+                label="Resume"
+                name="excerpt">
+                {{ old('excerpt', $post->excerpt) }}
+            </flux:textarea>
 
-            <flux:textarea label="Content" name="content" rows="16">{{old('content', $post->content)}}</flux:textarea>
+            {{-- Content --}}
+            <flux:textarea
+                label="Content"
+                name="content"
+                rows="16">
+                {{ old('content', $post->content) }}
+            </flux:textarea>
 
+            {{-- Status --}}
+            <flux:radio.group
+                label="Status"
+                name="is_published">
 
-
-            <flux:radio.group label="Status" name="is_published">
-                <flux:radio 
-                    value="1" 
+                <flux:radio
+                    value="1"
                     label="Published"
                     :checked="old('is_published', $post->is_published) == 1"
                 />
 
-                <flux:radio 
-                    value="0" 
+                <flux:radio
+                    value="0"
                     label="Not Published"
                     :checked="old('is_published', $post->is_published) == 0"
                 />
+
             </flux:radio.group>
 
-
-
-            <div class="flex justify-end">
+            {{-- Submit --}}
+            <div class="flex justify-end pt-4 border-t">
                 <flux:button variant="primary" type="submit">
-                    Save Post
+                    Update Post
                 </flux:button>
             </div>
+
         </form>
     </div>
 

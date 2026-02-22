@@ -26,7 +26,8 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.posts.create', compact('categories'));
+        $tags = Tag::all();
+        return view('admin.posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -36,11 +37,21 @@ class PostController extends Controller
     {
         $data = $request->validate([
             'title' => 'required',
-            'slug' => 'required|unique:posts',
+            'slug' => 'required|unique:posts,slug,',
             'category_id' => 'required|exists:categories,id',
+            'excerpt' => 'nullable',
+            'content' => 'nullable',
+            'image' => 'nullable|image',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
+            'is_published' => 'required|boolean'
         ]);
 
         $data['user_id'] = auth()->id();
+
+        if($request->is_published){
+            $data['published_at'] = now();
+        }
 
         $post = Post::create($data);
 
@@ -49,6 +60,8 @@ class PostController extends Controller
             'title' => 'Post created',
             'text' => 'Post created successfully',
         ]);
+
+        $post->tags()->sync($data['tags'] ?? []);
 
         return redirect()->route('admin.posts.index', $post);
     }
