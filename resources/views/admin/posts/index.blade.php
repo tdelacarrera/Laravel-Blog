@@ -22,6 +22,7 @@
                     <tr>
                         <th class="px-6 py-3 font-medium">ID</th>
                         <th class="px-6 py-3 font-medium">Title</th>
+                        <th class="px-6 py-3 font-medium">Actions</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -11,7 +11,12 @@
         </flux:breadcrumbs.item>
     </flux:breadcrumbs>
 
-    <div class="bg-white px-6 py-8 shadow-lg rounded-lg">
+        <div class="bg-white dark:bg-zinc-900 
+            px-6 py-8 
+            shadow-lg dark:shadow-zinc-950/40 
+            rounded-lg 
+            border border-zinc-200 dark:border-zinc-700">
+            
         <form action="{{route('admin.tags.store')}}" method="POST">
             @csrf
 
