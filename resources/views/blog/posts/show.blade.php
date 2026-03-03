@@ -40,7 +40,7 @@
 
         <!-- Back Button -->
         <div class="mt-12">
-            <a href="{{ route('posts.index') }}" 
+            <a href="{{ route('blog.posts.index') }}" 
                class="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:underline">
                 ← Back to all posts
             </a>

@@ -75,7 +75,7 @@
                             </div>
 
                             <!-- CTA -->
-                            <a href="{{ route('posts.show', $post) }}" 
+                            <a href="{{ route('blog.posts.show', $post) }}" 
                                class="inline-flex items-center text-sm font-medium text-indigo-600 
                                       dark:text-indigo-400 hover:underline">
                                 Read more →
